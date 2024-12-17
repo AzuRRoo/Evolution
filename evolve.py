@@ -4,6 +4,10 @@ import json
 
 question_map = {}
 
+def reset(root):
+    root.destroy()
+    main()
+
 def load_questions_from_json(json_file):
     with open(json_file, 'r') as f:
         return json.load(f)
@@ -23,6 +27,9 @@ def get_questions_and_options(env):
             questions[query] = options
     
     return questions
+
+def back(env, root, question, options, questions_asked, question_frame):
+
 
 def ask_question(env, root, question, options, questions_asked, question_frame):
     """ Create a question and present options using tkinter widgets """
@@ -47,7 +54,7 @@ def ask_question(env, root, question, options, questions_asked, question_frame):
     # Function to handle the submission and update facts
     def submit():
         user_choice = selected_option.get()
-        if user_choice:
+        if user_choice and user_choice != "back":
             # Create a fact string to update the response in CLIPS
             fact_string = f"(to-change (query \"{question}\") (response \"{user_choice}\"))"
             print(f"Asserting fact: {fact_string}")
@@ -71,6 +78,10 @@ def ask_question(env, root, question, options, questions_asked, question_frame):
     submit_button = tk.Button(question_frame, text="Submit", command=submit, font=("Arial", 12))
     submit_button.pack(pady=20)
 
+    reset_button = tk.Button(question_frame,text="RESET",command=lambda: reset(root),font=("Comic Sans", 12))
+    reset_button.pack(pady=20)
+
+    back_button = tk.Button(question_frame,text="Back",command=lambda: back(env, root, question, options, questions_asked, question_frame),font=("Arial",12))
 def run(env, root, questions_asked, question_frame):
     """ Main function to run the application, show questions and collect responses """
     env.run()  # Run the CLIPS engine to process rules and facts
@@ -137,7 +148,7 @@ def main():
     env.load('Rule_based_engine.clp')  # Load the CLIPS rule file
     root, question_frame = init()  # Initialize tkinter window
     questions_asked = []  # Track which questions have been asked
-    run(env, root, questions_asked, question_frame)  # Start the questioning process
+    run(env,root, questions_asked, question_frame)  # Start the questioning process
     root.mainloop()  # Start the tkinter event loop
 
 if __name__ == "__main__":
