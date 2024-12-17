@@ -354,22 +354,22 @@
 (defrule NoMeat
         (response-to-query (query "What") (response "No Meat"))
         =>
-        (assert (request("Hippie"))
-))
+        (assert (request(query "Hippie")))
+)
 (defrule Picky
         (response-to-query (query "What") (response "Picky"))
         =>
-        (assert (request("Tree"))
+        (assert (request(query "Tree"))
 ))
 (defrule Blood
         (response-to-query (query "What") (response "Blood"))
         =>
-        (assert (request("Kill"))
+        (assert (request(query "Kill"))
 ))
 (defrule Beard
         (response-to-query (query "Hippie") (response "Yes"))
         =>
-        (assert (request("Beard"))
+        (assert (request(query "Beard"))
 ))
 (defrule WoollyYak
         (response-to-query (query "Beard") (response "FullBody"))
@@ -384,7 +384,7 @@
 (defrule Vote
         (response-to-query (query "Hippie") (response "No"))
         =>
-        (assert (request("Vote"))
+        (assert (request(query "Vote"))
 ))
 (defrule AfricanElephant
         (response-to-query (query "Vote") (response "Guns"))
@@ -399,7 +399,7 @@
 (defrule HowLazy
         (response-to-query (query "Tree") (response "No"))
         =>
-        (assert (request("Lazy"))
+        (assert (request(query "Lazy"))
 ))
 (defrule AlpineMarmot
         (response-to-query (query "Lazy") (response "NineMonths"))
@@ -414,8 +414,8 @@
 (defrule HowQuick
         (response-to-query (query "Tree") (response "Yes"))
         =>
-        (assert (request("Quickly"))
-))
+        (assert (request(query "Quickly")))
+)
 (defrule HimalayanBlackBear
         (response-to-query (query "Quickly") (response "FasterThanYouThink"))
         =>
@@ -429,7 +429,7 @@
 (defrule WhyNotKill
         (response-to-query (query "Kill") (response "No"))
         =>
-        (assert (request("Why not"))
+        (assert (request(query "Why not"))
 ))
 (defrule RuppellsGriffinVulture
         (response-to-query (query "Why not") (response "SomeoneElse"))
@@ -444,7 +444,7 @@
 (defrule HowLongKill
         (response-to-query (query "Kill") (response "Yes"))
         =>
-        (assert (request("Take"))
+        (assert (request(query "Take"))
 ))
 (defrule SaltwaterCrocodile
         (response-to-query (query "Take") (response "FewSeconds"))
