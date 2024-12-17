@@ -1,5 +1,5 @@
 import tkinter as tk
-import clips as clp
+import clips as clp # type: ignore
 import json
 
 question_map = {}
