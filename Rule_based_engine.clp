@@ -194,7 +194,7 @@
 (defrule DesertMonitor
         (response-to-query (query "Where") (response "TheSand"))
         =>
-        (assert result-animal DesertMonitor)
+        (assert (result-animal DesertMonitor))
 )
 (defrule Shallows
 	(response-to-query (query "Where") (response "In the shallows"))
@@ -219,7 +219,7 @@
 (defrule Algae
         (response-to-query (query "French Fries") (response "No"))
         =>
-        (assert result-animal Algae)
+        (assert (result-animal Algae))
 )
 (defrule FeralPigeon
         (response-to-query (query "French Fries") (response "Yes"))
