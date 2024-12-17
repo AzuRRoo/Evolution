@@ -39,7 +39,7 @@
 (assert (response-to-query (query "Own or rent")(response "undefined") 		(options "If i pee on it, i own it, right?" "I'm in between floors at the moment")	))
 
 (assert (response-to-query (query "Hit Quit")(response "undefined")	(options "Yes" "No")	))
-(assert (response-to-query (query "Home dad")(response "undefined")	(options "Yes" "No")	))
+(assert (response-to-query (query "HomeDad")(response "undefined")	(options "Yes" "No")	))
 
 (assert (response-to-query (query "Where")(response "undefined")	(options "The sand" "In the shallows" "The deep blue sea" "No, the deep blue see")	))
 (assert (response-to-query (query "French Fries")(response "undefined")	(options "Yes, and pretzels"	"No")	))
@@ -54,9 +54,9 @@
 (assert (response-to-query (query "Graveyard")(response "undefined")(options "Yes" "No")))
 (assert (response-to-query (query "Cuddly")(response "undefined")(options "People other than my mother say i am" "My mother says i am")))
 
-(assert (response-to-query (query "What")(response "undefined")(options "No meat" "Eh, i'm not that picky" "Things with blood")))
+(assert (response-to-query (query "What")(response "undefined")(options "No Meat" "Eh, i'm not that picky" "Things with blood")))
 (assert (response-to-query (query "Hippie")(response "undefined") (options "Yes" "No")	))
-(assert (response-to-query (query "Beard")(response "undefined") (options "Full-body" "I'm more into tats")	))
+(assert (response-to-query (query "Beard")(response "undefined") (options "FullBody" "I'm more into tats")	))
 (assert (response-to-query (query "Vote")(response "undefined")(options "For guns" "For the underground movement" )))
 (assert (response-to-query (query "Tree")(response "undefined")	(options "Yes" "No"	)))
 (assert (response-to-query (query "Lazy")(response "undefined")	(options "I need 9 months of beauty sleep" "Trash cans are easier")))
@@ -70,6 +70,7 @@
 (assert (response-to-query (query "Stupid")(response "undefined")(options "It's ok; No one expects you to")))
 
 (assert (response-to-query (query "Take")(response "undefined") (options "I tie it up out back and kill it later" "A few seconds" "Hours")	))
+
 )
 (defrule return-rule
 	?t <- (request (query ?x))
@@ -148,11 +149,11 @@
 	=>
 	(assert (request (query "How so")))
 )
-;(defrule Dreams
-;	(response-to-query (query "How so")(response "In my dreams"))
-;	=>	
-;	(assert (result-animal (animal "Tanzania-ostrich")))
-;)
+(defrule Dreams
+	(response-to-query (query "How so")(response "In my dreams"))
+	=>
+	(assert (result-animal (animal "Tanzania-ostrich")))
+)
 (defrule Metaphorically
 	(response-to-query (query "How so")(response "Metaphorically"))
 	=>
@@ -188,6 +189,26 @@
 	(response-to-query (query "Favorite") (response "Mate"))
 	=>
 	(assert (request (query "Hit Quit")))
+)
+(defrule Dolphin
+	(response-to-query (query "Hit Quit") (response "Yes"))
+	=>
+	(assert (result-animal (animal "BottlenoseDolphin")))
+)
+(defrule NotHitQuit
+        (response-to-query (query "Hit Quit") (response "No"))
+	=>
+	(assert (request (query "HomeDad")))
+)
+(defrule HomeDad
+        (response-to-query (query "HomeDad") (response "Yes"))
+	=>
+	(assert (result-animal (animal "PygmySeahorse")))
+)
+(defrule NotHomeDad
+        (response-to-query (query "HomeDad") (response "No"))
+	=>
+	(assert (result-animal (animal "TurtleDove")))
 )
 (defrule Swim
 	(response-to-query (query "Favorite") (response "Swim"))
@@ -319,10 +340,20 @@
 	=>
 	(assert (request (query "Graveyard")))
 )
-(defrule IsCuddly
+(defrule NotCuddly
 	(response-to-query (query "Graveyard") (response "No"))
 	=>
 	(assert (request (query "Cuddly")))
+)
+(defrule CuddlyYes
+	(response-to-query (query "Cuddly") (response "People other than my mother say i am"))
+	=>
+	(assert (result-animal (animal "KoalaBear")))
+)
+(defrule CuddlyMom
+	(response-to-query (query "Cuddly") (response "My mother says i am"))
+	=>
+	(assert (result-animal (animal "GiantArmadillo")))
 )
 (defrule BrownBat
         (response-to-query (query "Graveyard") (response "Yes"))
@@ -359,6 +390,11 @@
         =>
         (assert (request(query "Hippie")))
 )
+(defrule Beard
+        (response-to-query (query "Hippie") (response "Yes"))
+        =>
+        (assert (request(query "Beard"))
+))
 (defrule Picky
         (response-to-query (query "What") (response "Picky"))
         =>
@@ -369,18 +405,13 @@
         =>
         (assert (request(query "Kill"))
 ))
-(defrule Beard
-        (response-to-query (query "Hippie") (response "Yes"))
-        =>
-        (assert (request(query "Beard"))
-))
 (defrule WoollyYak
         (response-to-query (query "Beard") (response "FullBody"))
         =>
         (assert (result-animal (animal "WoollyYak")))
 )
 (defrule GrantsZebra
-        (response-to-query (query "Beard") (response "Tats"))
+        (response-to-query (query "Beard") (response "I'm more into tats"))
         =>
         (assert (result-animal (animal "GrantsZebra")))
 )
@@ -390,7 +421,7 @@
         (assert (request(query "Vote"))
 ))
 (defrule AfricanElephant
-        (response-to-query (query "Vote") (response "Guns"))
+        (response-to-query (query "Vote") (response "For guns"))
         =>
         (assert (result-animal (animal "AfricanElephant")))
 )

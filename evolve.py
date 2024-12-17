@@ -73,17 +73,49 @@ def ask_question(env, root, question, options, questions_asked, question_frame):
 
 def run(env, root, questions_asked, question_frame):
     """ Main function to run the application, show questions and collect responses """
-    # Retrieve questions and their options from the CLIPS environment
+    env.run()  # Run the CLIPS engine to process rules and facts
+
+    # Check if this is the first question to ask
+    if not questions_asked:
+        # Retrieve all questions and options
+        questions = get_questions_and_options(env)
+
+        # Select the first question from the environment
+        first_question = list(questions.keys())[0]
+        options = questions[first_question]
+
+        # Mark this question as asked
+        questions_asked.append(first_question)
+
+        # Ask the first question
+        ask_question(env, root, first_question, options, questions_asked, question_frame)
+        return  # Return early to avoid processing request facts in the first run
+
+    # After the first question, dynamically check for the `request` fact
+    next_question = None
+    for fact in env.facts():  # Iterate over all facts in the CLIPS environment
+        
+        if fact.template.name == "request":
+            print(fact)
+            
+            next_question = fact["query"]  # Extract the query value (question name)
+            break  # Stop after finding the first request fact
+
+    if not next_question:
+        # If no request fact is found, assume the questioning process is complete
+        final_message = tk.Label(question_frame, text="Thank you for your responses!", font=("Arial", 16))
+        final_message.pack(pady=20)
+        return  # End the questioning process
+
+    # Retrieve the options for the next question
     questions = get_questions_and_options(env)
+    options = questions.get(next_question, [])
 
-    # Check if there are any questions left to ask
-    remaining_questions = {q: options for q, options in questions.items() if q not in questions_asked}
+    # Mark this question as asked to avoid asking it again
+    if next_question not in questions_asked:
+        questions_asked.append(next_question)
 
-    # Get the next question from the remaining ones
-    next_question = list(remaining_questions.keys())[0]
-    options = remaining_questions[next_question]
-
-    # Call the function to ask the current question and present options
+    # Ask the next question
     ask_question(env, root, next_question, options, questions_asked, question_frame)
 
 def init():
