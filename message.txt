@@ -1,24 +1,17 @@
 import tkinter as tk
 import clips as clp
-import json
 
-question_map = {}
-
-def load_questions_from_json(json_file):
-    with open(json_file, 'r') as f:
-        return json.load(f)
 
 def get_questions_and_options(env):
     """ Extract all questions and their available options from the CLIPS environment """
     questions = {}
-    
+
     env.run()  # Process rules and facts to get the current state
 
     # Loop through all facts in the environment and gather questions with options
     for fact in env.facts():
         if fact.template.name == "response-to-query":
             query = fact["query"]
-            #query = question_map.get(query, query)  # Default to query if not found in map
             options = fact["options"]
             questions[query] = options
     
@@ -29,12 +22,10 @@ def ask_question(env, root, question, options, questions_asked, question_frame):
     # Clear the previous widgets (if any) in the frame
     for widget in question_frame.winfo_children():
         widget.destroy()
-    
-    if question in question_map:
-        text = question_map[question]
+
     # Create a label for the current question
-        question_label = tk.Label(question_frame, text=text, font=("Arial", 14))
-        question_label.pack(pady=10)
+    question_label = tk.Label(question_frame, text=question, font=("Arial", 14))
+    question_label.pack(pady=10)
 
     # Variable to store the user's selected option
     selected_option = tk.StringVar()
@@ -59,8 +50,6 @@ def ask_question(env, root, question, options, questions_asked, question_frame):
                         result_label = tk.Label(question_frame, text=fact, font=("Arial", 14))
                         result_label.pack(pady=10)
                         print(fact)
-
-                        
             # Mark the current question as answered
             questions_asked.append(question)
 
@@ -94,12 +83,10 @@ def init():
     # Create a frame to hold all question-related widgets (to prevent window from growing uncontrollably)
     question_frame = tk.Frame(root)
     question_frame.pack(pady=20)
-    global question_map
-    question_map = load_questions_from_json('fullName.json')
+
     return root, question_frame
 
 def main():
-
     """ Main entry point for the application """
     env = clp.Environment()  # Initialize CLIPS environment
     env.load('Rule_based_engine.clp')  # Load the CLIPS rule file
