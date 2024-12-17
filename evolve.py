@@ -1,17 +1,22 @@
 import tkinter as tk
 import clips as clp
+import json
 
+def load_questions_from_json(json_file):
+    with open(json_file, 'r') as f:
+        return json.load(f)
 
 def get_questions_and_options(env):
     """ Extract all questions and their available options from the CLIPS environment """
     questions = {}
-
+    question_map = load_questions_from_json('fullName.json')
     env.run()  # Process rules and facts to get the current state
 
     # Loop through all facts in the environment and gather questions with options
     for fact in env.facts():
         if fact.template.name == "response-to-query":
             query = fact["query"]
+            query = question_map.get(query, query)  # Default to query if not found in map
             options = fact["options"]
             questions[query] = options
     
@@ -87,6 +92,7 @@ def init():
     return root, question_frame
 
 def main():
+
     """ Main entry point for the application """
     env = clp.Environment()  # Initialize CLIPS environment
     env.load('Rule_based_engine.clp')  # Load the CLIPS rule file
