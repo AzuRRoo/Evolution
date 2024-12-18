@@ -3,6 +3,7 @@ import clips as clp # type: ignore
 import json
 
 question_map = {}
+GlobalOptions = []
 
 def reset(root):
     root.destroy()
@@ -15,7 +16,7 @@ def load_questions_from_json(json_file):
 def get_questions_and_options(env):
     """ Extract all questions and their available options from the CLIPS environment """
     questions = {}
-    
+
     env.run()  # Process rules and facts to get the current state
 
     # Loop through all facts in the environment and gather questions with options
@@ -28,8 +29,30 @@ def get_questions_and_options(env):
     
     return questions
 
-def back(env, root, question, options, questions_asked, question_frame):
-    ask_question(env, root, question, options, questions_asked, question_frame)
+
+def back(env, root, query, options, questions_asked, question_frame): 
+
+    template_starszyBrat = env.find_template("set-to-undefined")
+
+    template_Jagiello = env.find_template("return")
+    
+    template_Jagiello.assert_fact(query = query)
+
+    template_starszyBrat.assert_fact(query = questions_asked[-2])
+
+    #env.assert_string(fact_string_change)  # Assert the to-change fact
+
+    #(f"Modyfing fact: {fact_string}")
+    env.run()
+    # for fact in env.facts():
+    #     print(fact)
+    global GlobalOptions
+    questions_asked = questions_asked[:-1]
+    if GlobalOptions:
+        GlobalOptions = GlobalOptions[:-1]
+    print(questions_asked)
+    print(GlobalOptions)
+    ask_question(env, root, questions_asked[-2], GlobalOptions[-1], questions_asked[:-1], question_frame)#change question options questions_asked
 
 def ask_question(env, root, question, options, questions_asked, question_frame):
     """ Create a question and present options using tkinter widgets """
@@ -57,16 +80,20 @@ def ask_question(env, root, question, options, questions_asked, question_frame):
         user_choice = selected_option.get()
         if user_choice:
             # Create a fact string to update the response in CLIPS
-            fact_string = f"(to-change (query \"{question}\") (response \"{user_choice}\"))"
-            print(f"Asserting fact: {fact_string}")
-            env.assert_string(fact_string)  # Update the CLIPS environment with the user's choice
+            #fact_string = f"(to-change (query \"{question}\") (response \"{user_choice}\"))"
+            #(f"Asserting fact: {fact_string}")
+            #env.assert_string(fact_string)  # Update the CLIPS environment with the user's choice
+            template_black = env.find_template("to-change")
+            template_black.assert_fact(query = question,response = user_choice)
+
             env.run()
 
             for fact in env.facts():
+                # print(fact)
                 if fact.template.name == "result-animal":
                         result_label = tk.Label(question_frame, text=fact, font=("Arial", 14))
                         result_label.pack(pady=10)
-                        print(fact)
+
 
                         
             # Mark the current question as answered
@@ -86,7 +113,6 @@ def ask_question(env, root, question, options, questions_asked, question_frame):
     back_button.pack(pady=20)
 
     if len(questions_asked) <= 1:
-        print("not")
         back_button.pack_forget()
 
 
@@ -102,7 +128,7 @@ def run(env, root, questions_asked, question_frame):
         # Select the first question from the environment
         first_question = list(questions.keys())[0]
         options = questions[first_question]
-
+        GlobalOptions.append(options)
         # Mark this question as asked
         questions_asked.append(first_question)
 
@@ -110,26 +136,29 @@ def run(env, root, questions_asked, question_frame):
         ask_question(env, root, first_question, options, questions_asked, question_frame)
         return  # Return early to avoid processing request facts in the first run
 
-    # After the first question, dynamically check for the `request` fact
-    next_question = None
-    for fact in env.facts():  # Iterate over all facts in the CLIPS environment
-        
-        if fact.template.name == "request":
-            print(fact)
+        #After the first question, dynamically check for the `request` fact
+        #next_question = None
+        #for fact in env.facts():  # Iterate over all facts in the CLIPS environment
             
-            next_question = fact["query"]  # Extract the query value (question name)
-            break  # Stop after finding the first request fact
+        #     if fact.template.name == "request":
+        #         #print(fact)
+                
+        #         next_question = fact["query"]  # Extract the query value (question name)
+        #         print(next_question)
+        #         break  # Stop after finding the first request fact
 
-    if not next_question:
-        # If no request fact is found, assume the questioning process is complete
-        final_message = tk.Label(question_frame, text="Thank you for your responses!", font=("Arial", 16))
-        final_message.pack(pady=20)
-        return  # End the questioning process
+        # if not next_question:
+        #     # If no request fact is found, assume the questioning process is complete
+        #     final_message = tk.Label(question_frame, text="Thank you for your responses!", font=("Arial", 16))
+        #     final_message.pack(pady=20)
+        #     return  # End the questioning process
+
+
 
     # Retrieve the options for the next question
     questions = get_questions_and_options(env)
     options = questions.get(next_question, [])
-
+    GlobalOptions.append(options)
     # Mark this question as asked to avoid asking it again
     if next_question not in questions_asked:
         questions_asked.append(next_question)
@@ -142,6 +171,7 @@ def init():
     root = tk.Tk()
     root.title("What species did you evolve from?")
 
+    
     # Create a frame to hold all question-related widgets (to prevent window from growing uncontrollably)
     question_frame = tk.Frame(root)
     question_frame.pack(pady=20)
@@ -154,6 +184,8 @@ def main():
     """ Main entry point for the application """
     env = clp.Environment()  # Initialize CLIPS environment
     env.load('Rule_based_engine.clp')  # Load the CLIPS rule file
+    template = env.find_template("return")
+
     root, question_frame = init()  # Initialize tkinter window
     questions_asked = []  # Track which questions have been asked
     run(env,root, questions_asked, question_frame)  # Start the questioning process
