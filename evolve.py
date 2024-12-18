@@ -28,8 +28,6 @@ def get_questions_and_options(env):
 
     return questions
 
-
-
 def ask_question(env, root, question, options, questions_asked, question_frame):
     """ Create a question and present options using tkinter widgets """
     # Clear the previous widgets (if any) in the frame
@@ -92,6 +90,7 @@ def ask_question(env, root, question, options, questions_asked, question_frame):
 def run(env, root, questions_asked, question_frame):
     """ Main function to run the application, show questions and collect responses """
     env.run()  # Run the CLIPS engine to process rules and facts
+
     next_question = None
     for fact in env.facts():  # Iterate over all facts in the CLIPS environment
         #print(fact)
