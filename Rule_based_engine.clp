@@ -72,17 +72,7 @@
 (assert (response-to-query (query "Take")(response "undefined") (options "I tie it up out back and kill it later" "A few seconds" "Hours")	))
 
 )
-(defrule return-rule
-	?t <- (request (query ?x))
-	?r <- (return (query ?x))
-	?s <- (set-to-undefined (query ?y))
-	?u <- (response-to-query (query ?y))
-	=> 
-	(retract ?s)
-	(retract ?r)
-	(retract ?t)
-	(modify ?u (response "undefined"))
-)
+
 (defrule change-fact
 	?e <- (to-change (query ?x) (response ?y))
 	?f <- (response-to-query (query ?x))
@@ -120,6 +110,7 @@
 	=>
 	(assert (result-animal (animal "Galapagos-tortoise")))
 )
+
 (defrule Bloody-good
 	(response-to-query (query "Posture") (response "Bloody good, mate"))
 	=>
