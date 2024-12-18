@@ -43,16 +43,17 @@ def back(env, root, query, options, questions_asked, question_frame):
     #env.assert_string(fact_string_change)  # Assert the to-change fact
 
     #(f"Modyfing fact: {fact_string}")
-    #env.run()
+
     # for fact in env.facts():
     #     print(fact)
     global GlobalOptions
     questions_asked = questions_asked[:-1]
     if GlobalOptions:
         GlobalOptions = GlobalOptions[:-1]
-    print(questions_asked)
-    print(GlobalOptions)
+    #print(questions_asked)
+    #print(GlobalOptions)
     questionTest=questions_asked[:-1]
+    env.run()
     ask_question(env, root, questions_asked[-1], GlobalOptions[-1], questionTest, question_frame)#change question options questions_asked
 
 def ask_question(env, root, question, options, questions_asked, question_frame):
@@ -128,7 +129,8 @@ def ask_question(env, root, question, options, questions_asked, question_frame):
 def run(env, root, questions_asked, question_frame):
     """ Main function to run the application, show questions and collect responses """
     env.run()  # Run the CLIPS engine to process rules and facts
-
+    print(questions_asked)
+    print(GlobalOptions)
     # Check if this is the first question to ask
     if not questions_asked:
         # Retrieve all questions and options
@@ -148,7 +150,7 @@ def run(env, root, questions_asked, question_frame):
         #After the first question, dynamically check for the `request` fact
     next_question = None
     for fact in env.facts():  # Iterate over all facts in the CLIPS environment
-        print(fact)
+        #print(fact)
         if fact.template.name == "request":
                 if "query" in fact and "options" in fact:
                     query = fact["query"]
@@ -159,7 +161,7 @@ def run(env, root, questions_asked, question_frame):
             #print(fact)
 
                     next_question = fact["query"]  # Extract the query value (question name)
-                    print(next_question)
+                    #print(next_question)
                     break  # Stop after finding the first request fact
 
     if not next_question:
