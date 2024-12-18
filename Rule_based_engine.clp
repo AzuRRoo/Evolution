@@ -41,7 +41,7 @@
 (assert (response-to-query (query "Hit Quit")(response "undefined")	(options "Yes" "No")	))
 (assert (response-to-query (query "HomeDad")(response "undefined")	(options "Yes" "No")	))
 
-(assert (response-to-query (query "Where")(response "undefined")	(options "The sand" "In the shallows" "The deep blue sea" "No, the deep blue see")	))
+(assert (response-to-query (query "Where")(response "undefined")	(options "The sand" "In the shallows" "The deep blue sea")	))
 (assert (response-to-query (query "French Fries")(response "undefined")	(options "Yes, and pretzels"	"No")	))
 (assert (response-to-query (query "Buoyancy")(response "undefined")	(options "I sink like a rock" "I couldn't sink if i tried")	))
 (assert (response-to-query (query "Recreationally")(response "undefined")	(options "I like to goof around" "I can be pretty intense")	))
@@ -56,7 +56,7 @@
 
 (assert (response-to-query (query "What")(response "undefined")(options "No Meat" "Eh, i'm not that picky" "Things with blood")))
 (assert (response-to-query (query "Hippie")(response "undefined") (options "Yes" "No")	))
-(assert (response-to-query (query "Beard")(response "undefined") (options "FullBody" "I'm more into tats")	))
+(assert (response-to-query (query "Beard")(response "undefined") (options "Full-Body" "I'm more into tats")	))
 (assert (response-to-query (query "Vote")(response "undefined")(options "For guns" "For the underground movement" )))
 (assert (response-to-query (query "Tree")(response "undefined")	(options "Yes" "No"	)))
 (assert (response-to-query (query "Lazy")(response "undefined")	(options "I need 9 months of beauty sleep" "Trash cans are easier")))
@@ -216,7 +216,7 @@
 	(assert (request (query "Where")))
 )
 (defrule DesertMonitor
-        (response-to-query (query "Where") (response "TheSand"))
+        (response-to-query (query "Where") (response "The sand"))
         =>
         (assert (result-animal (animal "DesertMonitor")))
 )
@@ -246,42 +246,42 @@
         (assert (result-animal (animal "Algae")))
 )
 (defrule FeralPigeon
-        (response-to-query (query "French Fries") (response "Yes"))
+        (response-to-query (query "French Fries") (response "Yes, and pretzels"))
         =>
         (assert (result-animal (animal "FeralPigeon")))
 )
 (defrule ThickShelledRiverMussel
-        (response-to-query (query "Buoyancy") (response "Rock"))
+        (response-to-query (query "Buoyancy") (response "I sink like a rock"))
         =>
         (assert (result-animal (animal "ThickShelledRiverMussel")))
 )
 (defrule LesserSnowGoose
-        (response-to-query (query "Buoyancy") (response "NoSink"))
+        (response-to-query (query "Buoyancy") (response "I couldn't sink if i tried"))
         =>
         (assert (result-animal (animal "LesserSnowGoose")))
 )
 (defrule EurasianRiverOtter
-        (response-to-query (query "Recreationally") (response "Goof"))
+        (response-to-query (query "Recreationally") (response "I like to goof around"))
         =>
         (assert (result-animal (animal "EurasianRiverOtter")))
 )
 (defrule RedPiranha
-        (response-to-query (query "Recreationally") (response "Intense"))
+        (response-to-query (query "Recreationally") (response "I can be pretty intense"))
         =>
         (assert (result-animal (animal "RedPiranha")))
 )
-(defrule TheDeepBlueSea
-	(response-to-query (query "Where") (response "TheDeepBlueSeaResponse"))
-	=>
-	(assert (request (query "DeepSea")))
-)
+;(defrule TheDeepBlueSea
+;	(response-to-query (query "Where") (response "TheDeepBlueSeaResponse"))
+;	=>
+;	(assert (request (query "DeepSea")))
+;)
 (defrule AloneQuestionRule
-	(response-to-query (query "DeepSea") (response "AloneQuestion"))
+	(response-to-query (query "DeepSea") (response "Alone?"))
 	=>
 	(assert (request (query "Alone")))
 )
 (defrule TheGigaDeepBlueSea
-	(response-to-query (query "DeepSea") (response "GigaDeepBlueSea"))
+	(response-to-query (query "DeepSea") (response "No, the deep blue sea"))
 	=>
 	(assert (request (query "Scary")))
 )
@@ -291,12 +291,12 @@
 	(assert (request (query "With who")))
 )
 (defrule FrenchAngelfish
-        (response-to-query (query "With who") (response "MyLifeMate"))
+        (response-to-query (query "With who") (response "My life mate"))
         =>
         (assert (result-animal (animal "FrenchAngelfish")))
 )
 (defrule YellowTailBarracuda
-        (response-to-query (query "With who") (response "FacebookFriends"))
+        (response-to-query (query "With who") (response "All 15000 of my facebook friends"))
         =>
         (assert (result-animal (animal "YellowTailBarracuda")))
 )
@@ -306,12 +306,12 @@
 	(assert (request (query "Bummer")))
 )
 (defrule BullShark
-        (response-to-query (query "Bummer") (response "Mean"))
+        (response-to-query (query "Bummer") (response "Because i'm mean"))
         =>
         (assert (result-animal (animal "BullShark")))
 )
 (defrule TransparentJellyfish
-        (response-to-query (query "Bummer") (response "Invisible"))
+        (response-to-query (query "Bummer") (response "Because i feel...invisible"))
         =>
         (assert (result-animal (animal "TransparentJellyfish")))
 )
@@ -366,17 +366,17 @@
         (assert (result-animal (animal "GiantArmadillo")))
 )
 (defrule KoalaBear
-        (response-to-query (query "Cuddly") (response "OtherThanMother"))
+        (response-to-query (query "Cuddly") (response "People other than my mother say i am"))
         =>
         (assert (result-animal (animal "KoalaBear")))
 )
 (defrule Stupido
-        (response-to-query (query "Favourite") (response "DontUnderstand"))
+        (response-to-query (query "Favourite") (response "I don't understand this chart"))
         =>
         (assert (request (query "Stupid")))
 )
 (defrule BelgiumMilkSheep
-        (response-to-query (query "Stupid") (response "NoExpect"))
+        (response-to-query (query "Stupid") (response "It's ok; No one expects you to"))
         =>
         (assert (result-animal (animal "BelgiumMilkSheep")))
 )
@@ -406,7 +406,7 @@
         (assert (request(query "Kill"))
 ))
 (defrule WoollyYak
-        (response-to-query (query "Beard") (response "FullBody"))
+        (response-to-query (query "Beard") (response "Full-Body"))
         =>
         (assert (result-animal (animal "WoollyYak")))
 )
@@ -426,7 +426,7 @@
         (assert (result-animal (animal "AfricanElephant")))
 )
 (defrule GardenWorm
-        (response-to-query (query "Vote") (response "UndergroundMovement"))
+        (response-to-query (query "Vote") (response "For the underground movement"))
         =>
         (assert (result-animal (animal "GardenWorm")))
 )
@@ -436,12 +436,12 @@
         (assert (request(query "Lazy"))
 ))
 (defrule AlpineMarmot
-        (response-to-query (query "Lazy") (response "NineMonths"))
+        (response-to-query (query "Lazy") (response "I need 9 months of beauty sleep"))
         =>
         (assert (result-animal (animal "AlpineMarmot")))
 )
 (defrule NorthernRaccoon
-        (response-to-query (query "Lazy") (response "TrashCan"))
+        (response-to-query (query "Lazy") (response "Trash cans are easier"))
         =>
         (assert (result-animal (animal "NorthernRaccoon")))
 )
@@ -451,12 +451,12 @@
         (assert (request(query "Quickly")))
 )
 (defrule HimalayanBlackBear
-        (response-to-query (query "Quickly") (response "FasterThanYouThink"))
+        (response-to-query (query "Quickly") (response "Faster than you'd think"))
         =>
         (assert (result-animal (animal "HimalayanBlackBear")))
 )
 (defrule TwoToedSloth
-        (response-to-query (query "Quickly") (response "SlowerThanYouThink"))
+        (response-to-query (query "Quickly") (response "Slower than you'd think"))
         =>
         (assert (result-animal (animal "TwoToedSloth")))
 )
@@ -466,12 +466,12 @@
         (assert (request(query "Why not"))
 ))
 (defrule RuppellsGriffinVulture
-        (response-to-query (query "Why not") (response "SomeoneElse"))
+        (response-to-query (query "Why not") (response "Cuz someone else does"))
         =>
         (assert (result-animal (animal "RuppellsGriffinVulture")))
 )
 (defrule HorseLeech
-        (response-to-query (query "Why not") (response "ExtraRare"))
+        (response-to-query (query "Why not") (response "I like my steak extra rare"))
         =>
         (assert (result-animal (animal "HorseLeech")))
 )
@@ -481,7 +481,7 @@
         (assert (request(query "Take"))
 ))
 (defrule SaltwaterCrocodile
-        (response-to-query (query "Take") (response "FewSeconds"))
+        (response-to-query (query "Take") (response "A few seconds"))
         =>
         (assert (result-animal (animal "SaltwaterCrocodile")))
 )
