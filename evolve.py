@@ -28,7 +28,7 @@ def get_questions_and_options(env):
     
     return questions
 
-def back(env, root, question, options, questions_asked, question_frame):
+#def back(env, root, question, options, questions_asked, question_frame):
 
 
 def ask_question(env, root, question, options, questions_asked, question_frame):
