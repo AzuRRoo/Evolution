@@ -25,7 +25,9 @@ def get_questions_and_options(env):
     return questions
 
 
+
 def ask_question(env, root, question, options, question_frame):
+
     for widget in question_frame.winfo_children():
         widget.destroy()
 
@@ -71,7 +73,9 @@ def ask_question(env, root, question, options, question_frame):
 
 def run(env, root,question_frame):
     """ Main function to run the application, show questions and collect responses """
+
     env.run()  
+
     next_question = None
     for fact in env.facts():  
         if fact.template.name == "request":
