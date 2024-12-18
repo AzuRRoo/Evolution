@@ -3,7 +3,7 @@ import clips as clp # type: ignore
 import json
 
 question_map = {}
-GlobalOptions = []
+# GlobalOptions = []
 
 def reset(root):
     root.destroy()
@@ -23,38 +23,10 @@ def get_questions_and_options(env):
     for fact in env.facts():
         if fact.template.name == "response-to-query":
             query = fact["query"]
-            #query = question_map.get(query, query)  # Default to query if not found in map
             options = fact["options"]
             questions[query] = options
 
     return questions
-
-
-def back(env, root, query, options, questions_asked, question_frame):
-
-    template_starszyBrat = env.find_template("set-to-undefined")
-
-    template_Jagiello = env.find_template("return")
-
-    template_Jagiello.assert_fact(query = query)
-
-    template_starszyBrat.assert_fact(query = questions_asked[-2])
-
-    #env.assert_string(fact_string_change)  # Assert the to-change fact
-
-    #(f"Modyfing fact: {fact_string}")
-
-    # for fact in env.facts():
-    #     print(fact)
-    global GlobalOptions
-    questions_asked = questions_asked[:-1]
-    if GlobalOptions:
-        GlobalOptions = GlobalOptions[:-1]
-    #print(questions_asked)
-    #print(GlobalOptions)
-    questionTest=questions_asked[:-1]
-    env.run()
-    ask_question(env, root, questions_asked[-1], GlobalOptions[-1], questionTest, question_frame)#change question options questions_asked
 
 def ask_question(env, root, question, options, questions_asked, question_frame):
     """ Create a question and present options using tkinter widgets """
@@ -81,22 +53,17 @@ def ask_question(env, root, question, options, questions_asked, question_frame):
     def submit():
         user_choice = selected_option.get()
         if user_choice:
-            # Create a fact string to update the response in CLIPS
-            #fact_string = f"(to-change (query \"{question}\") (response \"{user_choice}\"))"
-            #(f"Asserting fact: {fact_string}")
-            #env.assert_string(fact_string)  # Update the CLIPS environment with the user's choice
+            #Create a fact string to update the response in CLIPS
+            # fact_string = f"(to-change (query \"{question}\") (response \"{user_choice}\"))"
+            # (f"Asserting fact: {fact_string}")
+            # env.assert_string(fact_string)  # Update the CLIPS environment with the user's choice
 
             template_black = env.find_template("to-change")
             template_black.assert_fact(query = question,response = user_choice)
-            #template_starszyBrat = env.find_template("set-to-undefined")
+            env.run()
 
-            #template_Jagiello = env.find_template("return")
 
-            #template_Jagiello.assert_fact(query = question)
-
-            #template_starszyBrat.assert_fact(query = questions_asked[-1])
-
-            #env.run()
+            
 
             for fact in env.facts():
                 # print(fact)
@@ -119,40 +86,17 @@ def ask_question(env, root, question, options, questions_asked, question_frame):
     reset_button = tk.Button(question_frame,text="RESET",command=lambda: reset(root),font=("Comic Sans", 12))
     reset_button.pack(pady=20)
 
-    back_button = tk.Button(question_frame,text="Back",command=lambda: back(env, root, question, options, questions_asked, question_frame),font=("Arial",12))
-    back_button.pack(pady=20)
-
-    if len(questions_asked) <= 1:
-        back_button.pack_forget()
-
 
 def run(env, root, questions_asked, question_frame):
     """ Main function to run the application, show questions and collect responses """
     env.run()  # Run the CLIPS engine to process rules and facts
-    print(questions_asked)
-    print(GlobalOptions)
-    # Check if this is the first question to ask
-    if not questions_asked:
-        # Retrieve all questions and options
-        questions = get_questions_and_options(env)
 
-        # Select the first question from the environment
-        first_question = list(questions.keys())[0]
-        options = questions[first_question]
-        GlobalOptions.append(options)
-        # Mark this question as asked
-        questions_asked.append(first_question)
-
-        # Ask the first question
-        ask_question(env, root, first_question, options, questions_asked, question_frame)
-        return  # Return early to avoid processing request facts in the first run
-
-        #After the first question, dynamically check for the `request` fact
     next_question = None
     for fact in env.facts():  # Iterate over all facts in the CLIPS environment
         #print(fact)
         if fact.template.name == "request":
                 if "query" in fact and "options" in fact:
+                    print("StaraMarciniaka")
                     query = fact["query"]
                     options = fact["options"]
                     #print(f"Current question: {query}")
@@ -177,7 +121,7 @@ def run(env, root, questions_asked, question_frame):
     # Retrieve the options for the next question
     questions = get_questions_and_options(env)
     options = questions.get(next_question, [])
-    GlobalOptions.append(options)
+    #GlobalOptions.append(options)
     # Mark this question as asked to avoid asking it again
     if next_question not in questions_asked:
         questions_asked.append(next_question)
@@ -189,7 +133,7 @@ def init():
     """ Initialize the main tkinter window """
     root = tk.Tk()
     root.title("What species did you evolve from?")
-
+    root.geometry("400x400")
 
     # Create a frame to hold all question-related widgets (to prevent window from growing uncontrollably)
     question_frame = tk.Frame(root)

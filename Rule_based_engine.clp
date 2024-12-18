@@ -323,13 +323,16 @@
         =>
         (assert (result-animal (animal "TransparentJellyfish")))
 )
-(defrule IsScary
-	(response-to-query (query "Scary") (response "Yes"))
-	=>
-	(assert (request (query "More of")))
-)
-(defrule IsScary
+;(defrule IsScary
+;	(response-to-query (query "Scary") (response "Yes"))
+;	=>
+;	(assert (request (query "More of")))
+;)
+(defrule NotScary
+	(or
 	(response-to-query (query "Scary") (response "No"))
+	(response-to-query (query "Scary") (response "Yes"))
+	)
 	=>
 	(assert (request (query "More of")))
 )
@@ -339,7 +342,7 @@
         (assert (result-animal (animal "Viperfish")))
 )
 (defrule GiantSquid
-        (response-to-query (query "More of") (response "Appendagaes"))
+        (response-to-query (query "More of") (response "Appendages"))
         =>
         (assert (result-animal (animal "GiantSquid")))
 )
