@@ -21,7 +21,7 @@
 )
 (defrule queries
 =>
-(assert (response-to-query (query "Favorite")(response "undefined") (options "Run" "Mate" "Eat" "Swim" "Sleep") ))
+(assert (response-to-query (query "Favorite")(response "undefined") (options "Run" "Mate" "Eat" "Swim" "Sleep" "I don't understand this chart") ))
 
 
 (assert (response-to-query (query "How")(response "undefined") (options "Kidding... I walk" "So fast i fly" "I'm pretty quick")   ))
@@ -92,9 +92,6 @@
 	(retract ?e)
 	(retract ?g)
 )
-
-
-
 
 (defrule favorite
 	(response-to-query (query "Favorite")(response "undefined"))
@@ -185,6 +182,7 @@
 	=>
 	(assert (result-animal (animal "Miniature-schnauzer")))
 )
+
 (defrule Mate
 	(response-to-query (query "Favorite") (response "Mate"))
 	=>
@@ -219,6 +217,16 @@
         (response-to-query (query "Where") (response "The sand"))
         =>
         (assert (result-animal (animal "DesertMonitor")))
+)
+(defrule QuarterHorse
+        (response-to-query (query "IPOD") (response "My old kentucky home"))
+        =>
+        (assert (result-animal (animal "Quarterhorse")))
+)
+(defrule AfricanLion
+        (response-to-query (query "IPOD") (response "Hakuna matata"))
+        =>
+        (assert (result-animal (animal "AfricanLion")))
 )
 (defrule Shallows
 	(response-to-query (query "Where") (response "In the shallows"))
@@ -371,7 +379,7 @@
         (assert (result-animal (animal "KoalaBear")))
 )
 (defrule Stupido
-        (response-to-query (query "Favourite") (response "I don't understand this chart"))
+        (response-to-query (query "Favorite") (response "I don't understand this chart"))
         =>
         (assert (request (query "Stupid")))
 )
