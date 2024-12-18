@@ -65,7 +65,7 @@
 (assert (response-to-query (query "Why not")(response "undefined") (options "Cuz someone else does" "I like my steak extra rare")	))
 
 (assert (response-to-query (query "Shallows")(response "undefined")(options "Sidewalk puddles" "Ponds and lakes" "Rivers and streams")   ))
-(assert (response-to-query (query "DeepSea")(response "undefined")(options "Alone?" "No, the deep blue sea")))
+(assert (response-to-query (query "DeepSea")(response "undefined")(options "Alone?" "No, THE deep blue sea")))
 (assert (response-to-query (query "AloneQuestion")(response "undefined")(options "Yes" "No")))
 (assert (response-to-query (query "Stupid")(response "undefined")(options "It's ok; No one expects you to")))
 
@@ -226,7 +226,7 @@
 	(assert (request (query "Shallows")))
 )
 (defrule Puddles
-	(response-to-query (query "Shallows") (response "Puddles and lakes"))
+	(response-to-query (query "Shallows") (response "Sidewalk puddles"))
 	=>
 	(assert (request (query "French Fries")))
 )
@@ -270,18 +270,18 @@
         =>
         (assert (result-animal (animal "RedPiranha")))
 )
-;(defrule TheDeepBlueSea
-;	(response-to-query (query "Where") (response "TheDeepBlueSeaResponse"))
-;	=>
-;	(assert (request (query "DeepSea")))
-;)
+(defrule TheDeepBlueSea
+	(response-to-query (query "Where") (response "The deep blue sea"))
+	=>
+	(assert (request (query "DeepSea")))
+)
 (defrule AloneQuestionRule
 	(response-to-query (query "DeepSea") (response "Alone?"))
 	=>
 	(assert (request (query "Alone")))
 )
 (defrule TheGigaDeepBlueSea
-	(response-to-query (query "DeepSea") (response "No, the deep blue sea"))
+	(response-to-query (query "DeepSea") (response "No, THE deep blue sea"))
 	=>
 	(assert (request (query "Scary")))
 )
