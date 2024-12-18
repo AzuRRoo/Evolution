@@ -404,12 +404,12 @@
         (assert (request(query "Beard"))
 ))
 (defrule Picky
-        (response-to-query (query "What") (response "Picky"))
+        (response-to-query (query "What") (response "Eh, i'm not that picky"))
         =>
         (assert (request(query "Tree"))
 ))
 (defrule Blood
-        (response-to-query (query "What") (response "Blood"))
+        (response-to-query (query "What") (response "Things with blood"))
         =>
         (assert (request(query "Kill"))
 ))
