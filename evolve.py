@@ -83,8 +83,16 @@ def ask_question(env, root, question, options, questions_asked, question_frame):
             #fact_string = f"(to-change (query \"{question}\") (response \"{user_choice}\"))"
             #(f"Asserting fact: {fact_string}")
             #env.assert_string(fact_string)  # Update the CLIPS environment with the user's choice
-            template_black = env.find_template("to-change")
-            template_black.assert_fact(query = question,response = user_choice)
+            
+            # template_black = env.find_template("to-change")
+            # template_black.assert_fact(query = question,response = user_choice)
+            template_starszyBrat = env.find_template("set-to-undefined")
+
+            template_Jagiello = env.find_template("return")
+            
+            template_Jagiello.assert_fact(query = question)
+
+            template_starszyBrat.assert_fact(query = questions_asked[-1])
 
             env.run()
 
@@ -137,21 +145,28 @@ def run(env, root, questions_asked, question_frame):
         return  # Return early to avoid processing request facts in the first run
 
         #After the first question, dynamically check for the `request` fact
-        #next_question = None
-        #for fact in env.facts():  # Iterate over all facts in the CLIPS environment
+    next_question = None
+    for fact in env.facts():  # Iterate over all facts in the CLIPS environment
+        print(fact)
+        if fact.template.name == "request": 
+                if "query" in fact and "options" in fact:
+                    query = fact["query"]
+                    options = fact["options"]
+                    print(f"Current question: {query}")
+                    print(f"Available options: {options}")
+                else:
+                    print("The expected slots 'query' or 'options' are missing in this fact.")
+            #print(fact)
             
-        #     if fact.template.name == "request":
-        #         #print(fact)
-                
-        #         next_question = fact["query"]  # Extract the query value (question name)
-        #         print(next_question)
-        #         break  # Stop after finding the first request fact
+                    next_question = fact["query"]  # Extract the query value (question name)
+                    print(next_question)
+                    break  # Stop after finding the first request fact
 
-        # if not next_question:
-        #     # If no request fact is found, assume the questioning process is complete
-        #     final_message = tk.Label(question_frame, text="Thank you for your responses!", font=("Arial", 16))
-        #     final_message.pack(pady=20)
-        #     return  # End the questioning process
+    if not next_question:
+        # If no request fact is found, assume the questioning process is complete
+        final_message = tk.Label(question_frame, text="Thank you for your responses!", font=("Arial", 16))
+        final_message.pack(pady=20)
+        return  # End the questioning process
 
 
 
